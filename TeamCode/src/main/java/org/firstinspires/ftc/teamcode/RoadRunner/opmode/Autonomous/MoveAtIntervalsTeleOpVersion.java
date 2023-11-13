@@ -25,6 +25,7 @@ public class MoveAtIntervalsTeleOpVersion extends OpMode{
     @Override
     public void init() {
         main = new ElapsedTime();
+        //Set mode
         currentMode = Mode.AUTONOMOUS_MODE;
     }
 
