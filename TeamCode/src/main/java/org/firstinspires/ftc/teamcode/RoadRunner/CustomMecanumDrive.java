@@ -50,11 +50,8 @@ import static org.firstinspires.ftc.teamcode.RoadRunner.DriveConstants.kA;
 import static org.firstinspires.ftc.teamcode.RoadRunner.DriveConstants.kStatic;
 import static org.firstinspires.ftc.teamcode.RoadRunner.DriveConstants.kV;
 
-/*
- * Simple mecanum drive hardware implementation for REV hardware.
- */
 @Config
-public class SampleMecanumDrive extends MecanumDrive {
+public class CustomMecanumDrive extends MecanumDrive {
     public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0, 0, 0);
     public static PIDCoefficients HEADING_PID = new PIDCoefficients(0, 0, 0);
     public static final DcMotorSimple.Direction FORWARD = DcMotorSimple.Direction.FORWARD;
@@ -85,7 +82,7 @@ public class SampleMecanumDrive extends MecanumDrive {
     private List<Integer> lastEncPositions = new ArrayList<>();
     private List<Integer> lastEncVels = new ArrayList<>();
 
-    public SampleMecanumDrive(HardwareMap hardwareMap) {
+    public CustomMecanumDrive(HardwareMap hardwareMap, List<String> motor_configs, List<DcMotorSimple.Direction> motor_directions) {
         super(kV, kA, kStatic, TRACK_WIDTH, TRACK_WIDTH, LATERAL_MULTIPLIER);
 
         follower = new HolonomicPIDVAFollower(TRANSLATIONAL_PID, TRANSLATIONAL_PID, HEADING_PID,
@@ -105,14 +102,14 @@ public class SampleMecanumDrive extends MecanumDrive {
                 DriveConstants.LOGO_FACING_DIR, DriveConstants.USB_FACING_DIR));
         imu.initialize(parameters);
 
-        leftFront = hardwareMap.get(DcMotorEx.class, "fl");
+        leftFront = hardwareMap.get(DcMotorEx.class, motor_configs.get(0));
+        rightFront = hardwareMap.get(DcMotorEx.class, "fr");
         leftRear = hardwareMap.get(DcMotorEx.class, "bl");
         rightRear = hardwareMap.get(DcMotorEx.class, "br");
-        rightFront = hardwareMap.get(DcMotorEx.class, "fr");
         leftFront.setDirection(frontLeftDirection);
-        rightFront.setDirection(FORWARD);
-        leftRear.setDirection(REVERSE);
-        rightRear.setDirection(FORWARD);
+        rightFront.setDirection(frontRightDirection);
+        leftRear.setDirection(backLeftDirection);
+        rightRear.setDirection(backRightDirection);
         motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
 
         for (DcMotorEx motor : motors) {
