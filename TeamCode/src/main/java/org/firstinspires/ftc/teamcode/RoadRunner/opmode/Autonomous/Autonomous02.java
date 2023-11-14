@@ -15,6 +15,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import java.util.List;
 @Autonomous
 public class Autonomous02 extends OpMode {
+    private int listSize = 0;
     MoveUsingDistance moveUsingDistance = new MoveUsingDistance();
     public static final DcMotorSimple.Direction FORWARD = DcMotorSimple.Direction.FORWARD;
     public static final DcMotorSimple.Direction REVERSE = DcMotorSimple.Direction.REVERSE;
@@ -43,7 +44,7 @@ public class Autonomous02 extends OpMode {
     @Override
     public void init() {
         latestTag = AprilTags.NONE;
-        webcamName = functions.getWebcamName("webcam1");
+        webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
         aprilTagProcessor = functions.createAprilTagProcessor();
         visionPortal = functions.createVisionPortal(webcamName,aprilTagProcessor);
         frontLeft = hardwareMap.get(DcMotor.class,"fl");
@@ -64,18 +65,36 @@ public class Autonomous02 extends OpMode {
     @Override
     public void init_loop() {
         currentDetections = aprilTagProcessor.getDetections();
-        for (AprilTagDetection detection : currentDetections){
+        for (AprilTagDetection detection : currentDetections) {
             int id = detection.id;
-            if (id != tagIDs.get(tagIDs.size())) {
+            if (tagIDs.size() != 0) {
+                listSize = tagIDs.size();
+            }
+            if (listSize != 0) {
+                if (id != tagIDs.get(tagIDs.size())) {
+                    tagIDs.add(id);
+                    latestTag = getTagFromID(id);
+                    if (id == 1) {
+                        double xOffset = detection.ftcPose.x;
+                        while (xOffset < 3 || xOffset >= 4) {
+                            if (xOffset >= 4) {
+                                moveUsingDistance.moveForward(0.25, hardwareMap);
+                            } else {
+                                moveUsingDistance.moveBackward(0.25, hardwareMap);
+                            }
+                        }
+                    }
+                }
+            }
+            else {
                 tagIDs.add(id);
                 latestTag = getTagFromID(id);
-                if (id == 1){
+                if (id == 1) {
                     double xOffset = detection.ftcPose.x;
-                    while (xOffset < 3 || xOffset >= 4){
-                        if(xOffset >= 4 ){
+                    while (xOffset < 3 || xOffset >= 4) {
+                        if (xOffset >= 4) {
                             moveUsingDistance.moveForward(0.25, hardwareMap);
-                        }
-                        else {
+                        } else {
                             moveUsingDistance.moveBackward(0.25, hardwareMap);
                         }
                     }
