@@ -10,11 +10,14 @@ import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import java.util.List;
 @Autonomous
 public class Autonomous02 extends OpMode {
     MoveUsingDistance moveUsingDistance = new MoveUsingDistance();
+    public static final DcMotorSimple.Direction FORWARD = DcMotorSimple.Direction.FORWARD;
+    public static final DcMotorSimple.Direction REVERSE = DcMotorSimple.Direction.REVERSE;
     private AprilTagProcessor aprilTagProcessor;
     private VisionPortal visionPortal;
     public WebcamName webcamName;
@@ -48,9 +51,13 @@ public class Autonomous02 extends OpMode {
         backLeft = hardwareMap.get(DcMotor.class,"bl");
         backRight = hardwareMap.get(DcMotor.class,"br");
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //frontLeft.setDirection(REVERSE);
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //frontRight.setDirection(FORWARD);
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //backLeft.setDirection(REVERSE);
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //backRight.setDirection(FORWARD);
         moveUsingDistance.moveForward(6, hardwareMap);
     }
 
