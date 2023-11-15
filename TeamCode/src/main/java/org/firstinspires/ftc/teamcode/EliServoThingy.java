@@ -45,5 +45,6 @@ public class EliServoThingy extends OpMode {
         }
         leftServo.setPosition(leftpos);
         rightServo.setPosition(rightpos);
+        pressed = false;
     }
 }
