@@ -73,10 +73,10 @@ public class Autonomous02 extends OpMode {
                 latestID = id;
                 latestTag = getTagFromID(id);
                 if (id == 1) {
-                    double xOffset = detection.ftcPose.x;
-                    telemetry.addLine("X Offset: " + detection.ftcPose.x);
-                    while (xOffset < 3 || xOffset >= 4) {
-                        if (xOffset >= 4) {
+                    double ZOffset = detection.ftcPose.z;
+                    telemetry.addLine("Z Offset: " + detection.ftcPose.z);
+                    while (zOffset < 3 || zOffset >= 4) {
+                        if (zOffset >= 4) {
                             moveUsingDistance.moveForward(0.25, hardwareMap);
                         } else {
                             moveUsingDistance.moveBackward(0.25, hardwareMap);
@@ -85,6 +85,8 @@ public class Autonomous02 extends OpMode {
                 }
                 else {
                     telemetry.addLine("X Offset: " + detection.ftcPose.x);
+                    telemetry.addLine("Y Offset: " + detection.ftcPose.y);
+                    telemetry.addLine("Z Offset: " + detection.ftcPose.z);
                 }
             }
         }
