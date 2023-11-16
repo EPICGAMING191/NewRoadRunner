@@ -10,6 +10,7 @@ public class EliServoThingy extends OpMode {
     private int leftpos;
     private int rightpos;
     private boolean pressed = false;
+    private boolean pressed2 = false;
     @Override
     public void init() {
         leftServo = hardwareMap.get(Servo.class,"leftServo");
@@ -19,28 +20,29 @@ public class EliServoThingy extends OpMode {
         leftServo.setPosition(leftpos);
         rightServo.setPosition(rightpos);
         pressed = false;
+        pressed2 = false;
     }
 
     @Override
     public void loop() {
         if(gamepad1.x){
             if(pressed == false) {
-                pressed = true;
                 if (leftpos == -1) {
                     leftpos = 0;
                 } else if (leftpos == 0) {
                     leftpos = -1;
                 }
+                pressed = true;
             }
         }
         if(gamepad1.b){
-            if(pressed == false) {
-                pressed = true;
+            if(pressed2 == false) {
                 if (rightpos == 1) {
                     rightpos = 0;
                 } else if (rightpos == 0) {
                     rightpos = 1;
                 }
+                pressed2 = true;
             }
         }
         leftServo.setPosition(leftpos);
