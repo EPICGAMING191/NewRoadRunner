@@ -36,6 +36,8 @@ public class EliServoThingy extends OpMode {
                 pressed = false;
             }
         }
+        leftServo.setPosition(leftpos);
+
         if(gamepad1.b){
             if(pressed2 == false) {
                 pressed2 = true;
@@ -47,7 +49,6 @@ public class EliServoThingy extends OpMode {
                 pressed2 = false;
             }
         }
-        leftServo.setPosition(leftpos);
         rightServo.setPosition(rightpos);
     }
 }

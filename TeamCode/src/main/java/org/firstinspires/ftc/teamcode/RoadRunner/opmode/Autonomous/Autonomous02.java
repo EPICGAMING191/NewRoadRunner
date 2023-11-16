@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.RoadRunner.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.RoadRunner.Functions;
 import org.firstinspires.ftc.teamcode.RoadRunner.opmode.MoveUsingDistance;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -24,7 +25,7 @@ public class Autonomous02 extends OpMode {
     public WebcamName webcamName;
     public StringBuilder idsFound;
     List<AprilTagDetection> currentDetections;
-    List <Integer> tagIDs;
+    private int latestID;
     private Functions functions = new Functions();
     public DcMotor frontLeft;
     public DcMotor frontRight;
@@ -66,31 +67,14 @@ public class Autonomous02 extends OpMode {
     public void init_loop() {
         currentDetections = aprilTagProcessor.getDetections();
         for (AprilTagDetection detection : currentDetections) {
+            telemetry.addLine("ID FOUND: " + detection.id);
             int id = detection.id;
-            if (tagIDs.size() != 0) {
-                listSize = tagIDs.size();
-            }
-            if (listSize != 0) {
-                if (id != tagIDs.get(tagIDs.size())) {
-                    tagIDs.add(id);
-                    latestTag = getTagFromID(id);
-                    if (id == 1) {
-                        double xOffset = detection.ftcPose.x;
-                        while (xOffset < 3 || xOffset >= 4) {
-                            if (xOffset >= 4) {
-                                moveUsingDistance.moveForward(0.25, hardwareMap);
-                            } else {
-                                moveUsingDistance.moveBackward(0.25, hardwareMap);
-                            }
-                        }
-                    }
-                }
-            }
-            else {
-                tagIDs.add(id);
+            if (id != latestID) {
+                latestID = id;
                 latestTag = getTagFromID(id);
                 if (id == 1) {
                     double xOffset = detection.ftcPose.x;
+                    telemetry.addLine("X Offset: " + detection.ftcPose.x);
                     while (xOffset < 3 || xOffset >= 4) {
                         if (xOffset >= 4) {
                             moveUsingDistance.moveForward(0.25, hardwareMap);
@@ -99,9 +83,12 @@ public class Autonomous02 extends OpMode {
                         }
                     }
                 }
+                else {
+                    telemetry.addLine("X Offset: " + detection.ftcPose.x);
+                }
             }
         }
-        telemetry.addLine(String.valueOf(latestTag));
+            telemetry.addLine(String.valueOf(latestTag));
     }
 
     @Override
