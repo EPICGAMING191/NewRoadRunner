@@ -27,26 +27,27 @@ public class EliServoThingy extends OpMode {
     public void loop() {
         if(gamepad1.x){
             if(pressed == false) {
+                pressed = true;
                 if (leftpos == -1) {
                     leftpos = 0;
                 } else if (leftpos == 0) {
                     leftpos = -1;
                 }
-                pressed = true;
+                pressed = false;
             }
         }
         if(gamepad1.b){
             if(pressed2 == false) {
+                pressed2 = true;
                 if (rightpos == 1) {
                     rightpos = 0;
                 } else if (rightpos == 0) {
                     rightpos = 1;
                 }
-                pressed2 = true;
+                pressed2 = false;
             }
         }
         leftServo.setPosition(leftpos);
         rightServo.setPosition(rightpos);
-        pressed = false;
     }
 }
